@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+import "DemoTypes.proto";
+option optimize_for = SPEED;
+
+package demo.services.grpc;
+
+//--------------------------------------------------------------------------------
+/// DemoRecord related data transfer objects
+//--------------------------------------------------------------------------------
+message LookupNextDemoRecordRequest
+{
+	int64							userId = 1;
+	uint64							lookupLang = 2;
+}
+
+message GetDemoRecordsMetadataListRequest
+{
+	uint64							skip = 1;
+	uint32							limit = 2;
+}
+
+message GetMetadataContentRequest {
+	int64							recordId = 1;
+}
+
+
+//-------------------------------------------------------------------------------------------------
+/// Interim related data transfer objects
+//-------------------------------------------------------------------------------------------------
+message InsertInterimRequest
+{
+	int64 							userId = 1;
+	int64                       	recordId = 2;
+	DemoContent						data = 3;
+}
+
+//-------------------------------------------------------------------------------------------------
+/// Lock related data transfer objects
+//-------------------------------------------------------------------------------------------------
+message RemoveLockRequest
+{
+	int64							userId = 1;
+	int64							recordId = 2;
+}
+
+
+//-------------------------------------------------------------------------------------------------
+/// DemoManagement
+//-------------------------------------------------------------------------------------------------
+service DemoManagement
+{
+	/// DemoRecord's related methods
+	rpc InsertDemoRecord (DemoRecord) returns (Void)
+	{
+	}
+
+	rpc GetRecordMetadataList (GetDemoRecordsMetadataListRequest) returns (DemoRecordMetadataSequence)
+	{
+	}
+
+	rpc LookupNextDemoRecord (LookupNextDemoRecordRequest) returns (DemoRecord)
+	{
+	}
+
+	/// Interim's related methods
+	rpc InsertInterim (InsertInterimRequest) returns (Void)
+	{
+	}
+
+	// Lock's related methods
+	rpc RemoveLock(RemoveLockRequest) returns (Void)
+	{
+	}
+
+	// Metadata getter method
+	rpc GetMetadataContent(GetMetadataContentRequest) returns (MetadataContent)
+	{
+	}
+}
+
+
